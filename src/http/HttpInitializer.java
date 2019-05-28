@@ -1,4 +1,4 @@
-package web.initializer;
+package http;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -6,13 +6,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslContext;
-import web.handler.WebServerHandler;
+import http.handler.HttpHandler;
 
-public class WebServerInitializer extends ChannelInitializer<SocketChannel> {
+public class HttpInitializer extends ChannelInitializer<SocketChannel> {
 
     private final SslContext sslCtx;
 
-    public WebServerInitializer(SslContext sslCtx) {
+    public HttpInitializer(SslContext sslCtx) {
         this.sslCtx = sslCtx;
     }
 
@@ -24,6 +24,6 @@ public class WebServerInitializer extends ChannelInitializer<SocketChannel> {
         }
         p.addLast(new HttpRequestDecoder());
         p.addLast(new HttpResponseEncoder());
-        p.addLast(new WebServerHandler());
+        p.addLast(new HttpHandler());
     }
 }

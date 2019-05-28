@@ -1,4 +1,4 @@
-package web.request;
+package http.request;
 
 import file.FileHandler;
 
