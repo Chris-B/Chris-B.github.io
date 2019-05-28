@@ -1,4 +1,4 @@
-package web.handler;
+package http.handler;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,9 +8,9 @@ import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.util.CharsetUtil;
 import io.netty.handler.codec.http.cookie.Cookie;
-import web.request.GET;
-import web.request.POST;
-import web.request.Type;
+import http.request.GET;
+import http.request.POST;
+import http.request.Type;
 
 
 import java.util.HashMap;
@@ -28,7 +28,7 @@ import static io.netty.handler.codec.http.HttpVersion.*;
 /**
  * Handles a server-side channel.
  */
-public class WebServerHandler extends SimpleChannelInboundHandler<Object> {
+public class HttpHandler extends SimpleChannelInboundHandler<Object> {
 
     HttpRequest request;
 

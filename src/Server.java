@@ -9,7 +9,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
-import web.initializer.WebServerInitializer;
+import http.HttpInitializer;
 
 
 public class Server {
@@ -38,7 +38,7 @@ public class Server {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class) // (3)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new WebServerInitializer(sslCtx));
+                    .childHandler(new HttpInitializer(sslCtx));
 
             ChannelFuture f = b.bind(port).sync(); // (7)
 
