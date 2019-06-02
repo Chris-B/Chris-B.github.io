@@ -8,10 +8,11 @@ public class FileHandler {
         BufferedInputStream stream;
         byte[] fBytes;
         try {
-            File file = new File("view".concat(path));
+            File file = new File(path);
             stream = new BufferedInputStream(new FileInputStream(file));
             fBytes = new byte[stream.available()];
             stream.read(fBytes, 0, stream.available());
+            stream.close();
         } catch (Exception e) {
             return null;
         }

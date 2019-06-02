@@ -14,15 +14,15 @@ import http.HttpInitializer;
 
 public class Server {
 
-    final boolean SSL = System.getProperty("ssl") != null;
     private int port;
 
     public Server(int port) {
         this.port = port;
     }
 
-    public void run() throws Exception {
+    public void runHttp() throws Exception {
 
+        final boolean SSL = System.getProperty("ssl") != null;
         final SslContext sslCtx;
         if (SSL) {
             SelfSignedCertificate ssc = new SelfSignedCertificate();
@@ -56,7 +56,7 @@ public class Server {
             port = Integer.parseInt(args[0]);
         }
 
-        new Server(port).run();
+        new Server(port).runHttp();
     }
 
 }
