@@ -10,26 +10,29 @@ import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import java.util.Map;
 import java.util.Set;
 
-public class MyWebsite extends HttpProtocol {
+public class FarmerJohn extends HttpProtocol {
 
-    public MyWebsite() {
-        super("view");
+    public FarmerJohn() {
+        super("farmer-john");
     }
 
     @Override
     public void onLoad() {}
 
+    @Override
     public void addAttributes(HttpRequest request, Map<String, Object> attributes) {
         super.addAttributes(request, attributes);
     }
 
     private byte[] GET(Map<String, Object> attributes) {
         String path = attributes.get("uri").toString();
-        if (!path.startsWith("/"))//Safety feature
+        if (!path.startsWith("/")
+                || path.contains("compressed")
+                || path.contains("json"))//Safety feature
             return null;
         if (path.equals("/"))
             path = path.concat("index.html");
-        byte[] fBytes = FileHandler.getFileBytes("view".concat(path));
+        byte[] fBytes = FileHandler.getFileBytes(baseDirectory.concat(path));
         return fBytes;
     }
 
@@ -49,15 +52,24 @@ public class MyWebsite extends HttpProtocol {
                 response = POST(attributes);
                 break;
         }
-        if (response != null && attributes.get("response-type").toString().contains("html"))
+        if (response != null
+                && attributes.get("response-type") != null
+                && attributes.get("response-type").toString().contains("html"))
             response = processHtml(response);
         return response;
     }
 
+    private String updateHeader(String header) {
+        return header.replace("{title}", httpConfig.title)
+        .replace("{author}", httpConfig.author)
+        .replace("{description}", httpConfig.description)
+        .replace("{charset}", httpConfig.charset);
+    }
+
     private byte[] processHtml(byte[] buf) {
-        byte[] hBytes = FileHandler.getFileBytes("view/header.html");
-        byte[] fBytes = FileHandler.getFileBytes("view/footer.html");
-        String header = new String(hBytes);
+        byte[] hBytes = FileHandler.getFileBytes(baseDirectory.concat("/header.html"));
+        byte[] fBytes = FileHandler.getFileBytes(baseDirectory.concat("/footer.html"));
+        String header = updateHeader(new String(hBytes));
         String footer = new String(fBytes);
         String body = new String(buf);
         body = body.replace("{header}", header);
@@ -83,8 +95,8 @@ public class MyWebsite extends HttpProtocol {
             }
         } else {
             // Browser sent no cookie.  Add some.
-            response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode("key1", "value1"));
-            response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode("key2", "value2"));
+            response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode("farmer", "john"));
+            response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode("chris", "eisah"));
         }
     }
 

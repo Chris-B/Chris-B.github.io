@@ -4,7 +4,7 @@ import java.io.*;
 
 public class FileHandler {
 
-    public static byte[] getWebFile(String path) {
+    public static byte[] getFileBytes(String path) {
         BufferedInputStream stream;
         byte[] fBytes;
         try {
@@ -17,6 +17,10 @@ public class FileHandler {
             return null;
         }
         return fBytes;
+    }
+
+    public static String fileToString(String path) {
+        return new String(getFileBytes(path));
     }
 
 }

@@ -1,13 +1,11 @@
 package http.handler;
 
 import http.HttpProtocol;
-import http.protocols.MyWebsite;
+import http.protocols.FarmerJohn;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
-import io.netty.util.CharsetUtil;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +18,16 @@ import static io.netty.handler.codec.http.HttpVersion.*;
 
 
 /**
- * Handles a server-side channel.
+ * Handler for HTTP Server. An Inbound Handler that receives HTTP request or content.
+ * request: The receives HTTP request
+ * attributes: Contains information about the request that the specific HTTP protocol needs.
+ * protocol: The specific HTTP protocol being used.
+ * HttpHandler(): Initializes attributes and protocol.
+ * channelRead0(ChannelHandlerContext, Object): Handles HttpRequest and HttpContent
+ * channelReadComplete(ChannelHandlerContext): Read completed so flush channel
+ * exceptionCaught(ChannelHandlerContext, Throwable): Print exception and close channel
+ * write100(ChannelHandlerContext): Write a 100 Continue response if requested.
+ * writeResponse(HttpObject, ChannelHandlerContext): Setup response and headers from protocol and write to channel.
  */
 public class HttpHandler extends SimpleChannelInboundHandler<Object> {
 
@@ -32,7 +39,7 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
 
     public HttpHandler() {
         attributes = new HashMap<>();
-        protocol = new MyWebsite();
+        protocol = new FarmerJohn();
         protocol.onLoad();
     }
 
