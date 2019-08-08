@@ -1,22 +1,14 @@
 package http.handler;
 
+import http.HttpProtocol;
+import http.protocols.FarmerJohn;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
-import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
-import io.netty.util.CharsetUtil;
-import io.netty.handler.codec.http.cookie.Cookie;
-import http.request.GET;
-import http.request.POST;
-import http.request.Type;
-
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
@@ -26,13 +18,30 @@ import static io.netty.handler.codec.http.HttpVersion.*;
 
 
 /**
- * Handles a server-side channel.
+ * Handler for HTTP Server. An Inbound Handler that receives HTTP request or content.
+ * request: The receives HTTP request
+ * attributes: Contains information about the request that the specific HTTP protocol needs.
+ * protocol: The specific HTTP protocol being used.
+ * HttpHandler(): Initializes attributes and protocol.
+ * channelRead0(ChannelHandlerContext, Object): Handles HttpRequest and HttpContent
+ * channelReadComplete(ChannelHandlerContext): Read completed so flush channel
+ * exceptionCaught(ChannelHandlerContext, Throwable): Print exception and close channel
+ * write100(ChannelHandlerContext): Write a 100 Continue response if requested.
+ * writeResponse(HttpObject, ChannelHandlerContext): Setup response and headers from protocol and write to channel.
  */
 public class HttpHandler extends SimpleChannelInboundHandler<Object> {
 
     HttpRequest request;
 
-    Map<String, Object> attributes = new HashMap<>();
+    Map<String, Object> attributes;
+
+    HttpProtocol protocol;
+
+    public HttpHandler() {
+        attributes = new HashMap<>();
+        protocol = new FarmerJohn();
+        protocol.onLoad();
+    }
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Object msg) {
@@ -46,17 +55,8 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
 
             attributes.clear();
 
-            HttpHeaders headers = request.headers();
-            attributes.put("type", request.method());
-            attributes.put("version", request.protocolVersion());
-            attributes.put("host", headers.get(HttpHeaderNames.HOST, "unknown"));
-            attributes.put("uri", request.uri());
-            attributes.put("response-type", headers.get("Accept").split(",")[0]);
-            attributes.put("user-agent", headers.get("User-Agent"));
-            attributes.put("keep-alive", headers.get("Connection").equals("keep-alive"));
+            protocol.addAttributes(request, attributes);
 
-            QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.uri());
-            Map<String, List<String>> params = queryStringDecoder.parameters();
         }
 
         if (msg instanceof HttpContent) {
@@ -83,54 +83,25 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
         ctx.write(response);
     }
 
-    Type getRequestType(HttpMethod type) {
-        switch (type.name()) {
-            case "GET":
-                return new GET();
-            case "POST":
-                return new POST();
-        }
-        return null;
-    }
-
     private boolean writeResponse(HttpObject currentObj, ChannelHandlerContext ctx) {
 
-        boolean keepAlive = isKeepAlive(request);
+        byte[] buf = protocol.response(attributes);
 
-        StringBuilder buf = getRequestType((HttpMethod) attributes.get("type")).response(attributes);
+        HttpResponseStatus status = buf == null ? NOT_FOUND : OK;
 
-        HttpResponseStatus status = buf.length() == 0 ? NOT_FOUND : OK;
+        if (buf == null)
+            buf = new byte[0];
 
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HTTP_1_1, currentObj.decoderResult().isSuccess()? status : BAD_REQUEST,
-                Unpooled.copiedBuffer(buf.toString(), CharsetUtil.UTF_8));
+                Unpooled.copiedBuffer(buf));
 
-        String contentType = attributes.get("response-type").toString();
-
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
-
-        if (keepAlive) {
-
-            response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
-
-            response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
-        }
+        boolean keepAlive = isKeepAlive(request);
 
         // Encode the cookie.
         String cookieString = request.headers().get(HttpHeaderNames.COOKIE);
-        if (cookieString != null) {
-            Set<Cookie> cookies = ServerCookieDecoder.STRICT.decode(cookieString);
-            if (!cookies.isEmpty()) {
-                // Reset the cookies if necessary.
-                for (Cookie cookie: cookies) {
-                    response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookie));
-                }
-            }
-        } else {
-            // Browser sent no cookie.  Add some.
-            response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode("key1", "value1"));
-            response.headers().add(HttpHeaderNames.SET_COOKIE, ServerCookieEncoder.STRICT.encode("key2", "value2"));
-        }
+
+        protocol.responseHeaders(response, cookieString, attributes, keepAlive);
 
         // Write the response.
         ctx.write(response);

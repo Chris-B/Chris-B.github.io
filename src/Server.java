@@ -12,17 +12,22 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 import http.HttpInitializer;
 
 
+/**
+ * Main File For Running Server
+ * port: Port that the server will run on
+ * runHttp(): Sets up SSL, Event Groups, Bootstrap, and Channel for HTTP server
+ */
 public class Server {
 
-    final boolean SSL = System.getProperty("ssl") != null;
     private int port;
 
     public Server(int port) {
         this.port = port;
     }
 
-    public void run() throws Exception {
+    public void runHttp() throws Exception {
 
+        final boolean SSL = System.getProperty("ssl") != null;
         final SslContext sslCtx;
         if (SSL) {
             SelfSignedCertificate ssc = new SelfSignedCertificate();
@@ -51,12 +56,12 @@ public class Server {
 
     public static void main(String[] args) throws Exception {
 
-        int port = 8080;
+        int port = 6969;
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
 
-        new Server(port).run();
+        new Server(port).runHttp();
     }
 
 }
