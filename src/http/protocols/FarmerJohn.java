@@ -30,7 +30,7 @@ public class FarmerJohn extends HttpProtocol {
                 || path.contains("compressed")
                 || path.contains("json"))//Safety feature
             return null;
-        if (path.equals("/"))
+        if (path.endsWith("/"))
             path = path.concat("index.html");
         byte[] fBytes = FileHandler.getFileBytes(baseDirectory.concat(path));
         return fBytes;
@@ -80,6 +80,7 @@ public class FarmerJohn extends HttpProtocol {
     @Override
     public void responseHeaders(FullHttpResponse response, String cookieString, Map<String, Object> attributes, boolean keepAlive) {
         String contentType = attributes.get("response-type").toString();
+
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
         if (keepAlive) {
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());

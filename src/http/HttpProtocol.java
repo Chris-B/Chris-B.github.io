@@ -22,9 +22,13 @@ public abstract class HttpProtocol {
         HttpHeaders headers = request.headers();
         attributes.put("type", request.method());
         attributes.put("uri", request.uri());
-        if (headers.get("Accept") != null)
-            attributes.put("response-type", headers.get("Accept").split(",")[0]);
-        else
+        if (headers.get("Accept") != null) {
+            String firstAccept = headers.get("Accept").split(",")[0];
+            if (request.uri().endsWith(".png") || request.uri().endsWith(".jpg"))
+                attributes.put("response-type", "image/*");
+            else
+                attributes.put("response-type", firstAccept);
+        } else
             attributes.put("response-type", "*/*");
         attributes.put("user-agent", headers.get("User-Agent"));
         attributes.put("keep-alive", headers.get("Connection").equals("keep-alive"));

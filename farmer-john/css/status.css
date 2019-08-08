@@ -1,0 +1,100 @@
+#status-video-wrapper {
+    width: 80%;
+    max-width: 850px;
+    min-height: 202px;
+    height: calc(75vw*0.5625);
+    max-height: 476px;
+    border: solid 3px #5b443b;
+    border-radius: 8px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 0;
+}
+
+#status-video {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.status-container {
+    width: 80%;
+    max-width: 850px;
+    min-height: 202px;
+    border: solid 3px #5b443b;
+    border-radius: 8px;
+    margin: 25px auto 0 auto;
+    background-image: url("/img/ironblock.jpg");
+    background-size: 100% 100%;
+    padding: 0 15px;
+}
+
+.status-container {
+    text-align: justify;
+    text-align-last: left;
+}
+
+.status-container h2,h4 {
+    text-align: justify;
+    text-align-last: center;
+}
+
+.status-container pre {
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.status-container pre code {
+    color: #001778;
+    filter: opacity(160%);
+}
+
+.status-img-container {
+    width: 80%;
+    max-width: 850px;
+    min-height: 202px;
+    border: solid 3px #5b443b;
+    border-radius: 8px;
+    margin: 25px auto 0 auto;
+    background-image: url("/img/ironblock.jpg");
+    background-size: 100% 100%;
+    padding: 10px 10px;
+    text-align: center;
+}
+
+.code-text {
+    width: 100%;
+    margin: 0 0 15px 0;
+    padding: 0 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font: 130% "Times New Roman";
+    background-color: #adb5bd;
+    border-radius: 8px;
+    background: rgb(173, 181, 189); /* Fallback for older browsers without RGBA-support */
+    background: rgba(173, 181, 189, 0.4);
+}
+
+.status-text {
+    font: 23px "Times New Roman";
+    line-height: 115%;
+    color: black;
+    text-align: justify;
+    text-align-last: left;
+}
+
+.path-finding-accuracy-img {
+    width: 47%;
+    min-width: 320px;
+    margin: 5px 3px 5px 3px;
+    border-radius: 8px;
+}
+
+.path-finding-heatmaps-img {
+    width: 47%;
+    min-width: 320px;
+    margin: 5px 3px 5px 3px;
+    border-radius: 8px;
+}
