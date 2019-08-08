@@ -1,2 +1,5 @@
 # HTTP Web Server
-Java HTTP server using netty.io
+
+HTTP server and website for Farmer John Minecraft AI.
+
+Created with java and netty.io framework.
