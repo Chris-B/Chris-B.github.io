@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Minecraft Farming AI">
+    <meta name="author" content="Chris + Eisah">
+    <link rel="icon" href="../favicon.ico">
+
+    <title>Farmer John</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/navigation.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/home.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/team.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/status.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/final.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="container-fluid page-wrapper">
+
+    <div id="stickied-content" class="sticky-top">
+        <div id="logo-bar">
+            <div id="logo-text">
+                <img id="logo-farmer" src="../img/logo_farmer.png"/>
+                <img id="logo-john" src="../img/logo_john.png"/>
+            </div>
+        </div>
+        <div id="nav-bar">
+            <div class="nav-button" onclick="homeClick()">Home</div>
+            <div class="nav-button" onclick="teamClick()">Team</div>
+            <div class="nav-button" onclick="statusClick()">Status</div>
+            <div class="nav-button" onclick="finalClick()">Final</div>
+        </div>
+    </div>
+
+    <script>
+        function homeClick() {
+            window.location.href = "/";
+        }
+        function teamClick() {
+            window.location.href = "/team/"
+        }
+        function statusClick() {
+            window.location.href = "/status/"
+        }
+        function finalClick() {
+            window.location.href = "/final/"
+        }
+    </script>
+
+    <div class="fj-spacer-10"></div>
+
+
+    <div id="body-wrapper">
+
+
+
+<div id="status-video-wrapper">
+    <iframe id="status-video"
+            src="https://www.youtube.com/embed/1-_TA086qQM"
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+</div>
+<div class="fj-spacer-10"></div>
+<div class="fj-spacer-10"></div>
+<div class="status-container" id="status-summary-container">
+    <h2>Status Summary</h2>
+    <p class="status-text">
+        The goal of our project is to make a farm maintenance AI agent that can help farmer John with all of his farming duties.
+        Our agent will be able to navigate the farm, moving from plot to plot, planting and harvesting as efficiently as possible.
+        The agent will have the choice to plant wheat, carrots, and potatoes all which have different reward values for being planted and harvested.
+        Evaluating the value of the state over a regular time interval should give us a good estimate of how efficiently the agent is working.
+        <br><br>
+        For the first half of this project we are focusing on the pathfinding abilities of the agent.
+        This is powered by a Dueling Double Deep Q Network which consists of 4 convolutional layers and splits into two networks; the main and target network.
+        The main network computes the value function of the state. This function tells us how good it is to be in any given state.
+        The target network computes the advantage function of the state. This function tells us how much better taking a certain action would be compared to others.
+        We then sum these values to get our final Q-value. These functions are then combined into one final Q-function in the last layer.
+        The output is a number from 0-4, each number representing an action in {front, left, right, back}.
+        <br><br>
+        The reason we are using this type of network is because the size of the state space is fairly large.
+        For each plot that is set as a destination, there are (farm_width^2)-(# farmland and water blocks) possible position states.
+        For our 16x16 farm with 4 standard square plots, there are a total of 7,040 possible states that our agent needs to learn and discover.
+        The goal is to expand to larger farming areas, so this type of network also allows for this expansion. This stage of the project is nearly complete.
+        Here is some more technical information about the network and it’s policies.
+    </p>
+</div>
+
+<div class="status-container" id="status-network-container">
+    <h2>Network Details</h2>
+    <div class="fj-spacer-10"></div>
+    <h4>State-Action Q-function</h4>
+    <div class="code-text">
+    <pre><code>Q(s, a) = V(s) + A(a)</code></pre>
+    </div>
+
+    <h4>Network Training Update</h4>
+    <div class="code-text">
+    <pre><code>if total_steps % (pfn.update_freq) == 0:
+    trainBatch = myBuffer.sample(pfn.batch_size)
+    Q1 = sess.run(mainQN.predict,
+        feed_dict={mainQN.scalarInput:np.vstack(trainBatch[:,3])})
+    Q2 = sess.run(targetQN.Qout,
+        feed_dict={targetQN.scalarInput:np.vstack(trainBatch[:,3])})
+    end_multiplier = -(trainBatch[:, 4] - 1)
+    doubleQ = Q2[range(pfn.batch_size), Q1]
+    targetQ = trainBatch[:,2] + (pfn.y*doubleQ*end_multiplier)
+    _ = sess.run(mainQN.updateModel,
+        feed_dict={mainQN.scalarInput:np.vstack(trainBatch[:,0]),
+        mainQN.targetQ:targetQ, mainQN.actions:trainBatch[:,1]})
+    pfn.update_target(targetOps, sess)
+    </code></pre>
+    </div>
+
+    <p class="status-text">The network also takes advantage of Experience Replay. This allows the agent to store it’s experiences, and then randomly draw batches of them to train the network. This should allow the agent to more robustly learn to navigate. In essence, this prevents the network from only learning what it is immediately doing in the environment, and allow it to learn from all of its past experiences. When the buffer reaches its maximum size, the oldest experiences are removed as the new ones are added.</p>
+
+    <h4>Here is our buffer class:</h4>
+    <div class="code-text">
+    <pre><code>class experience_buffer():
+    def __init__(self, buffer_size = 100000):
+        self.buffer = []
+        self.buffer_size = buffer_size
+
+    def add(self, experience):
+        if len(self.buffer) + len(experience) &gt;= self.buffer_size:
+            self.buffer[0:(len(experience)+len(self.buffer))
+                        -self.buffer_size] = []
+        self.buffer.extend(experience)
+
+    def sample(self, size, dest):
+        return np.reshape(np.array(random.sample(self.buffer, size)),
+                        [size, 5])
+
+    </code>
+    </pre>
+    </div>
+
+    <h4>This is how our buffer is saved during the training process:</h4>
+    <div class="code-text">
+    <pre><code># s  = previous state
+# a  = action taken from previous state
+# r  = reward from taking action
+# s1 = resulting state from action
+# d  = whether or not the agent has completed mission
+episodeBuffer.add(np.reshape(np.array([s, a, r, s1, d]), [1, 5]))
+    </code></pre>
+    </div>
+
+    <h4>Lastly, here is our reward function for our agent.</h4>
+    <div class="code-text">
+    <pre><code>def get_reward(start, end, moved, optimal_path, new_dist):
+    global already_travelled
+    path, dim = optimal_path
+    optimal_move = path[1]
+    optimal_x = get_row(optimal_move, dim)
+    optimal_y = get_col(optimal_move, dim)
+
+    result = 0
+    # If agent did not move, penalize 10
+    if len(path) == new_dist:
+        result -= 10
+    # If agent is further away, penalize 20
+    elif len(path) &lt; new_dist:
+        result -= 20
+    else: # If agent is closer, reward 20
+        result += 20
+
+    dist = new_dist-1
+    if dist &lt; 2: # If within interaction distance
+        return 100
+    result -= dist * 0.2
+    if moved == -1: # If made an invalid move
+        result -= 10
+    else: # If made a valid move
+        result -= 1
+    # If has already been to block
+    if start in already_travelled:
+        result -= 5
+    else:
+        already_travelled.append(start)
+    return result
+    </code></pre>
+    </div>
+</div>
+
+<div class="status-img-container" id="path-finding-accuracy">
+    <h2>Path Finding Accuracy</h2>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/4_4.png"/>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/4_12.png"/>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/5_4.png"/>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/6_5.png"/>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/6_10.png"/>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/10_4.png"/>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/11_6.png"/>
+    <img class="path-finding-accuracy-img" src="../img/data/status/pathfinding/accuracy/12_5.png"/>
+</div>
+
+<div class="status-img-container" id="path-finding-heatmaps">
+    <h2>Path Finding Heatmaps</h2>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/4_4.png"/>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/4_12.png"/>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/5_4.png"/>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/6_5.png"/>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/6_10.png"/>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/10_4.png"/>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/11_6.png"/>
+    <img class="path-finding-heatmaps-img" src="../img/data/status/pathfinding/heatmaps/12_5.png"/>
+</div>
+<!-- <div class="container-fluid">
+    <div class="bopped-container" id="social-section">
+        <a href="#" class="social-icon facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://twitter.com/BoppedAIO" target="_blank" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+        <label class="bopped-copyright">&copy; Copyright 2018 BOPPED.APP</label>
+    </div>
+</div>
+
+-->
+
+
+    </div>
+</div>
+</body>
+
+<script src="../js/jquery.js"></script>
+
+<script src="../js/popper.js"></script>
+
+<script src="../js/bootstrap.js"></script>
+
+</html>

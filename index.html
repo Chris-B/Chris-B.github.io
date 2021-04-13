@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Minecraft Farming AI">
+    <meta name="author" content="Chris + Eisah">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Farmer John</title>
+
+    <link rel="stylesheet" type="text/css" href="css/navigation.css"/>
+    <link rel="stylesheet" type="text/css" href="css/home.css"/>
+    <link rel="stylesheet" type="text/css" href="css/team.css"/>
+    <link rel="stylesheet" type="text/css" href="css/status.css"/>
+    <link rel="stylesheet" type="text/css" href="css/final.css"/>
+    <link rel="stylesheet" type="text/css" href="css/global.css"/>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="container-fluid page-wrapper">
+
+    <div id="stickied-content" class="sticky-top">
+        <div id="logo-bar">
+            <div id="logo-text">
+                <img id="logo-farmer" src="img/logo_farmer.png"/>
+                <img id="logo-john" src="img/logo_john.png"/>
+            </div>
+        </div>
+        <div id="nav-bar">
+            <div class="nav-button" onclick="homeClick()">Home</div>
+            <div class="nav-button" onclick="teamClick()">Team</div>
+            <div class="nav-button" onclick="statusClick()">Status</div>
+            <div class="nav-button" onclick="finalClick()">Final</div>
+        </div>
+    </div>
+
+    <script>
+        function homeClick() {
+            window.location.href = "/";
+        }
+        function teamClick() {
+            window.location.href = "/team/"
+        }
+        function statusClick() {
+            window.location.href = "/status/"
+        }
+        function finalClick() {
+            window.location.href = "/final/"
+        }
+    </script>
+
+    <div class="fj-spacer-10"></div>
+
+
+    <div id="body-wrapper">
+
+<div id="home-img-wrapper">
+    <img id="home-img" src="img/farmer.jpg"/>
+</div>
+<div class="fj-spacer-10"></div>
+<div class="fj-spacer-10"></div>
+<div class="home-div">
+    <h2>Farmer John</h2>
+    <p class="home-text">
+        Farmer John is getting too old and achy to be working on his farm all day everyday.
+        He wanted to hire some farmworkers, but we convinced him that our team could build
+        an AI agent that could easily help him on his farm and for much cheaper than
+        conventional labor. Farmer John wants us to make an AI agent that can plant and
+        harvest wheat, carrots, and potatoes for him. This means we will need to teach our
+        AI farmer to navigate around Farmer John’s farm and how to best maintain the farm
+        in order to guarantee the highest possible crop yield.
+    </p>
+</div>
+
+<div class="home-div">
+    <h2>Favorite Minecraft Videos</h2>
+    <div id="home-links-wrapper">
+        <div class="link-wrapper"><p class="home-link"><a href="https://www.youtube.com/watch?v=dY48r9K-j_4">Minecraft The Movie 1</a></p></div>
+
+        <div class="link-wrapper"><p class="home-link"><a href="https://www.youtube.com/watch?v=zGJEBiI85hM">MINECRAFT FAIL, A Minecraft Parody</a></p></div>
+
+        <div class="link-wrapper"><p class="home-link"><a href="https://www.youtube.com/watch?v=5C7xceB2-UE">REALISTIC MINECRAFT IN REAL LIFE!</a></p></div>
+
+        <div class="link-wrapper"><p class="home-link"><a href="https://www.youtube.com/watch?v=o7ABSsu-ACM">Rooster Teeth Animated Adventures - The One in the Hole</a></p></div>
+
+        <div class="link-wrapper"><p class="home-link"><a href="https://www.youtube.com/watch?v=anoO3K5vOEg">An Egg’s Guide to Minecraft - PART 1 - What’s Minecraft?</a></p></div>
+
+        <div class="link-wrapper"><p class="home-link"><a href="https://www.youtube.com/watch?v=FrLgREKD4kk">Let’s Play Minecraft with Geoff, Jack, Michael, Gavin and Ray</a></p></div>
+    </div>
+</div>
+
+<!-- <div class="container-fluid">
+    <div class="bopped-container" id="social-section">
+        <a href="#" class="social-icon facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://twitter.com/BoppedAIO" target="_blank" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+        <label class="bopped-copyright">&copy; Copyright 2018 BOPPED.APP</label>
+    </div>
+</div>
+
+-->
+
+
+    </div>
+</div>
+</body>
+
+<script src="js/jquery.js"></script>
+
+<script src="js/popper.js"></script>
+
+<script src="js/bootstrap.js"></script>
+
+</html>

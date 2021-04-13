@@ -1,0 +1,128 @@
+#final-video-wrapper {
+    width: 80%;
+    max-width: 850px;
+    min-height: 202px;
+    height: calc(75vw*0.5625);
+    max-height: 476px;
+    border: solid 3px #5b443b;
+    border-radius: 8px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 0;
+}
+
+#final-video {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.final-container {
+    width: 80%;
+    max-width: 850px;
+    border: solid 3px #5b443b;
+    border-radius: 8px;
+    margin: 25px auto 0 auto;
+    background-image: url("../img/ironblock.jpg");
+    background-size: 100% 100%;
+    padding: 0 15px;
+}
+
+#final-summary-container {
+    text-align: justify;
+    text-align-last: center;
+}
+
+.final-container h2,h4 {
+    text-align: justify;
+    text-align-last: center;
+}
+
+.final-container img {
+    text-align: center;
+}
+
+.final-container pre {
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.final-container pre code {
+    color: #001778;
+    filter: opacity(160%);
+}
+
+.code-text {
+    width: 100%;
+    margin: 0 0 15px 0;
+    padding: 0 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font: 130% "Times New Roman";
+    border-radius: 8px;
+    background: rgb(173, 181, 189); /* Fallback for older browsers without RGBA-support */
+    background: rgba(173, 181, 189, 0.4);
+}
+
+.final-text {
+    font: 23px "Times New Roman";
+    line-height: 115%;
+    color: black;
+    text-align: justify;
+    text-align-last: left;
+}
+
+#final-evaluation-container {
+    text-align: center;
+    padding: 10px 0;
+}
+
+#final-evaluation-container p {
+    margin: 10px 15px;
+}
+
+.final-network-img {
+    width: 46%;
+    min-width: 320px;
+    margin: 5px 3px 5px 3px;
+    border-radius: 8px;
+}
+
+.final-full-width-img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.add-margin {
+    margin: 10px 0.9%;
+    width: 96%;
+}
+
+#final-links-wrapper {
+    padding: 0 0;
+    display: inline-block;
+}
+
+.link-wrapper {
+    display: block;
+}
+
+.final-link {
+    font: 21px "Times New Roman";
+    line-height: 110%;
+}
+
+.final-link a {
+    color: darkgreen;
+}
+
+#final-references-container {
+    text-align: center;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Minecraft Farming AI">
+    <meta name="author" content="Chris + Eisah">
+    <link rel="icon" href="../favicon.ico">
+
+    <title>Farmer John</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/navigation.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/home.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/team.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/status.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/final.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/global.css"/>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="container-fluid page-wrapper">
+
+    <div id="stickied-content" class="sticky-top">
+        <div id="logo-bar">
+            <div id="logo-text">
+                <img id="logo-farmer" src="../img/logo_farmer.png"/>
+                <img id="logo-john" src="../img/logo_john.png"/>
+            </div>
+        </div>
+        <div id="nav-bar">
+            <div class="nav-button" onclick="homeClick()">Home</div>
+            <div class="nav-button" onclick="teamClick()">Team</div>
+            <div class="nav-button" onclick="statusClick()">Status</div>
+            <div class="nav-button" onclick="finalClick()">Final</div>
+        </div>
+    </div>
+
+    <script>
+        function homeClick() {
+            window.location.href = "/";
+        }
+        function teamClick() {
+            window.location.href = "/team/"
+        }
+        function statusClick() {
+            window.location.href = "/status/"
+        }
+        function finalClick() {
+            window.location.href = "/final/"
+        }
+    </script>
+
+    <div class="fj-spacer-10"></div>
+
+
+    <div id="body-wrapper">
+
+
+
+<div id="team-container">
+    <div class="member-node">
+        <img id="chris-img" src="../img/chris.png"/>
+        <div class="fj-spacer-10"></div>
+        <h3>CHRIS BARCLAY</h3>
+        <h4>CRBARCLA</h4>
+    </div>
+    <div class="member-node">
+        <img id="eisah-img" src="../img/eisah.png" onclick="goToEisahSite()"/>
+        <div class="fj-spacer-10"></div>
+        <h3>EISAH JONES</h3>
+        <h4>JONESEA</h4>
+    </div>
+    <div class="member-node">
+        <img id="paul-img" src="../img/paul.png"/>
+        <div class="fj-spacer-10"></div>
+        <h3>PAUL BADALIAN</h3>
+        <h4>PBADALIA</h4>
+    </div>
+</div>
+
+<script>
+    function goToEisahSite() {
+        window.location.href = "http://www.eisahjones.com";
+    }
+</script>
+
+<!-- <div class="container-fluid">
+    <div class="bopped-container" id="social-section">
+        <a href="#" class="social-icon facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://twitter.com/BoppedAIO" target="_blank" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+        <label class="bopped-copyright">&copy; Copyright 2018 BOPPED.APP</label>
+    </div>
+</div>
+
+-->
+
+
+    </div>
+</div>
+</body>
+
+<script src="../js/jquery.js"></script>
+
+<script src="../js/popper.js"></script>
+
+<script src="../js/bootstrap.js"></script>
+
+</html>
