@@ -4,7 +4,7 @@
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
   */
 !function (t, e) {
-    "object" == typeof exports && "undefined" != typeof module ? e(exports, require("farmer-john/js/jquery"), require("farmer-john/js/popper")) : "function" == typeof define && define.amd ? define(["exports", "farmer-john/js/jquery", "popper.js"], e) : e(t.bootstrap = {}, t.jQuery, t.Popper)
+    "object" == typeof exports && "undefined" != typeof module ? e(exports, require("js/jquery"), require("js/popper")) : "function" == typeof define && define.amd ? define(["exports", "js/jquery", "popper.js"], e) : e(t.bootstrap = {}, t.jQuery, t.Popper)
 }(this, function (t, e, h) {
     "use strict";
 
