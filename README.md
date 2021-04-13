@@ -1,5 +1,5 @@
-# HTTP Web Server
+# Farmer John Website
 
-HTTP server and website for Farmer John Minecraft AI.
+Website for Farmer John Minecraft AI.
 
-Created with java and netty.io framework.
+Created with html, css, and js.
